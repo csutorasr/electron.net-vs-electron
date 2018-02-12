@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace electron.net
 {
@@ -46,6 +48,32 @@ namespace electron.net
                 {
                     context.Request.Path = "/index.html";
                     await next();
+                    Electron.IpcMain.On("todos", (todos) =>
+                    {
+                        if (todos.GetType() == typeof(JArray))
+                        {
+                            var list = new List<ToDo>();
+                            foreach (var todo in (JArray)todos)
+                            {
+                                list.Add(new ToDo
+                                {
+                                    text = ((JObject)todo).Value<string>("text"),
+                                    done = ((JObject)todo).Value<bool>("done")
+                                });
+                            }
+                            File.WriteAllText(@"todos.json", JsonConvert.SerializeObject(list));
+                        }
+                    });
+                    Electron.IpcMain.On("load-todos", (args) =>
+                    {
+                        string todos = "[]";
+                        if (File.Exists(@"todos.json"))
+                        {
+                            todos = File.ReadAllText(@"todos.json");
+                        }
+                        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+                        Electron.IpcMain.Send(mainWindow, "todos", todos);
+                    });
                 }
             });
 
