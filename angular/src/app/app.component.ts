@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToDo } from './todo';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  todos: ToDo[] = [];
+  add() {
+    this.todos.push({
+      text: '',
+      done: false,
+    });
+  }
+  remove(todo) {
+    this.todos = this.todos.filter(x => x !== todo);
+  }
+  save() {
+    console.log(this.todos);
+  }
 }
