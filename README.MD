@@ -6,4 +6,10 @@ This example is an angular application that runs with electron.net and electron.
 
 ### 1. Build angular
 
-Run `cd angular && npm run build`.
+Run `cd angular && npm install && npm run build`.
+
+### 2. Build electron
+
+#### 2.1 Electron with nodejs
+
+Run `cd electron && npm start`.
