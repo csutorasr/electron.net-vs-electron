@@ -79,8 +79,6 @@ namespace electron.net
 
             app.UseStaticFiles();
 
-            Console.WriteLine(Directory.GetCurrentDirectory());
-
             Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
         }
     }
