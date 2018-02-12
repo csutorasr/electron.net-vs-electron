@@ -13,3 +13,7 @@ Run `cd angular && npm install && npm run build`.
 #### 2.1 Electron with nodejs
 
 Run `cd electron && npm start`.
+
+#### 2.2 Electron.NET
+
+Run `cp -R dist/. electron.net/wwwroot && cd electron.net && dotnet restore && dotnet electronize start`.
